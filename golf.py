@@ -21,9 +21,9 @@ for i in range(100):
     for combo in product(string.printable, repeat=i):
         input_string = ''.join(combo)
         cmd_file = open('cmd', 'w')
-        cmd_file.write('au VimEnter * ' + input_string + '<esc>:wq')
+        cmd_file.write('au VimEnter * :norm ' + input_string + '<esc>:wq')
         cmd_file.close()
-        os.system('vim -u cmd' + filename)
+        os.system('vim -u cmd ' + filename)
         file = open(filename, 'r')
         match_text = file.read()
         file.close()
