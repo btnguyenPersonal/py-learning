@@ -9,7 +9,7 @@ filename = sys.argv[1]
 
 input_file = open(filename, 'r')
 match_text = input_file.read()
-os.system('touch ' + filename + '.bak')
+os.system('cp ' + filename + ' ' + filename + '.bak')
 input_file.close()
 
 target_filename = sys.argv[2]
@@ -20,10 +20,13 @@ target_file.close()
 for i in range(100):
     for combo in product(string.printable, repeat=i):
         input_string = ''.join(combo)
-        os.system('vim -c "' + input_string + '" ' + filename)
-        input_file = open(filename, 'r')
-        match_text = input_file.read()
-        input_file.close()
+        cmd_file = open('cmd', 'w')
+        cmd_file.write('au VimEnter * ' + input_string + '<esc>:wq')
+        cmd_file.close()
+        os.system('vim -u cmd' + filename)
+        file = open(filename, 'r')
+        match_text = file.read()
+        file.close()
         if match_text == target_text:
             print(input_string)
         os.system('cp ' + filename + '.bak ' + filename)
